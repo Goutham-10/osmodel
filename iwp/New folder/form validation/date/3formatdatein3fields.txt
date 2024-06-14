@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Validation Form</title>
+</head>
+<body>
+    <h2>Date Validation Form</h2>
+    <form id="dateForm">
+        <label for="date1">Enter a date (YYYY-MM-DD):</label><br>
+        <input type="text" id="date1" name="date1" placeholder="YYYY-MM-DD"><br><br>
+        
+        <label for="date2">Enter a date (MM-DD-YYYY):</label><br>
+        <input type="text" id="date2" name="date2" placeholder="MM-DD-YYYY"><br><br>
+        
+        <label for="date3">Enter a date (DD-MM-YYYY):</label><br>
+        <input type="text" id="date3" name="date3" placeholder="DD-MM-YYYY"><br><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        document.getElementById('dateForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent form from submitting
+            validateDates();
+        });
+
+        function validateDates() {
+            const date1 = document.getElementById('date1').value;
+            const date2 = document.getElementById('date2').value;
+            const date3 = document.getElementById('date3').value;
+
+            if (date1) {
+                if (!validateDateFormat(date1, /^\d{4}-\d{2}-\d{2}$/)) {
+                    alert('Invalid date format for YYYY-MM-DD.');
+                    return;
+                }
+                if (!isValidDate(date1, 'YYYY-MM-DD')) {
+                    alert('Invalid date for YYYY-MM-DD.');
+                    return;
+                }
+            }
+
+            if (date2) {
+                if (!validateDateFormat(date2, /^\d{2}-\d{2}-\d{4}$/)) {
+                    alert('Invalid date format for MM-DD-YYYY.');
+                    return;
+                }
+                if (!isValidDate(date2, 'MM-DD-YYYY')) {
+                    alert('Invalid date for MM-DD-YYYY.');
+                    return;
+                }
+            }
+
+            if (date3) {
+                if (!validateDateFormat(date3, /^\d{2}-\d{2}-\d{4}$/)) {
+                    alert('Invalid date format for DD-MM-YYYY.');
+                    return;
+                }
+                if (!isValidDate(date3, 'DD-MM-YYYY')) {
+                    alert('Invalid date for DD-MM-YYYY.');
+                    return;
+                }
+            }
+
+            alert('All dates are valid!');
+        }
+
+        function validateDateFormat(date, pattern) {
+            return pattern.test(date);
+        }
+
+        function isValidDate(dateInput, format) {
+            let date;
+            if (format === 'YYYY-MM-DD') {
+                const [year, month, day] = dateInput.split('-').map(Number);
+                date = new Date(`${year}-${month}-${day}`);
+                return date.getFullYear() === year && (date.getMonth() + 1) === month && date.getDate() === day;
+            } else if (format === 'MM-DD-YYYY') {
+                const [month, day, year] = dateInput.split('-').map(Number);
+                date = new Date(`${year}-${month}-${day}`);
+                return date.getFullYear() === year && (date.getMonth() + 1) === month && date.getDate() === day;
+            } else if (format === 'DD-MM-YYYY') {
+                const [day, month, year] = dateInput.split('-').map(Number);
+                date = new Date(`${year}-${month}-${day}`);
+                return date.getFullYear() === year && (date.getMonth() + 1) === month && date.getDate() === day;
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

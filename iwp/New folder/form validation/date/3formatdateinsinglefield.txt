@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Validation Form</title>
+</head>
+<body>
+    <h2>Date Validation Form</h2>
+    <form id="dateForm">
+        <label for="date">Enter a date (YYYY-MM-DD, MM-DD-YYYY, or DD-MM-YYYY):</label><br>
+        <input type="text" id="date" name="date" placeholder="YYYY-MM-DD or MM-DD-YYYY or DD-MM-YYYY"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        document.getElementById('dateForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent form from submitting
+            validateDate();
+        });
+
+        function validateDate() {
+            const dateInput = document.getElementById('date').value;
+            const patterns = [
+                /^\d{4}-\d{2}-\d{2}$/,  // YYYY-MM-DD
+                /^\d{2}-\d{2}-\d{4}$/,  // MM-DD-YYYY
+                /^\d{2}-\d{2}-\d{4}$/   // DD-MM-YYYY
+            ];
+
+            let isValidFormat = false;
+            let date;
+
+            for (const pattern of patterns) {
+                if (pattern.test(dateInput)) {
+                    isValidFormat = true;
+                    break;
+                }
+            }
+
+            if (!isValidFormat) {
+                alert('Invalid date format. Please use YYYY-MM-DD, MM-DD-YYYY, or DD-MM-YYYY.');
+                return;
+            }
+
+            if (patterns[0].test(dateInput)) {
+                // YYYY-MM-DD
+                const [year, month, day] = dateInput.split('-').map(Number);
+                date = new Date(`${year}-${month}-${day}`);
+                if (date.getFullYear() !== year || (date.getMonth() + 1) !== month || date.getDate() !== day) {
+                    alert('Invalid date. Please enter a real date.');
+                    return;
+                }
+            } else if (patterns[1].test(dateInput)) {
+                // MM-DD-YYYY
+                const [month, day, year] = dateInput.split('-').map(Number);
+                date = new Date(`${year}-${month}-${day}`);
+                if (date.getFullYear() !== year || (date.getMonth() + 1) !== month || date.getDate() !== day) {
+                    alert('Invalid date. Please enter a real date.');
+                    return;
+                }
+            } else if (patterns[2].test(dateInput)) {
+                // DD-MM-YYYY
+                const [day, month, year] = dateInput.split('-').map(Number);
+                date = new Date(`${year}-${month}-${day}`);
+                if (date.getFullYear() !== year || (date.getMonth() + 1) !== month || date.getDate() !== day) {
+                    alert('Invalid date. Please enter a real date.');
+                    return;
+                }
+            }
+
+            alert('Date is valid!');
+        }
+    </script>
+</body>
+</html>
